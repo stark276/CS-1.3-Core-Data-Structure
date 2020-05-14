@@ -24,6 +24,20 @@ def decode(digits, base):
     # TODO: Decode digits from any base (2 up to 36)
     # ...
 
+    decoded_value = 0
+
+    digits = digits[::-1] # Reverse the list/string because index starts left to right, and we need to start right to left
+
+    for i in range(len(digits)):
+        if digits[i].isalpha(): # Checks to see if the digit is a character instead of numerical
+            digit = string.ascii_lowercase.index(digits[i].lower()) + 10 # Can add 10 b/c starts at 0, in alphabetical order
+        else:
+            digit = int(digits[i]) # Convert to integer
+
+        # power = len(digits) - i - 1 # Get the power
+        decoded_value += digit * (base ** i)
+
+    return decoded_value
 
 def encode(number, base):
     """Encode given number in base 10 to digits in given base.
@@ -40,6 +54,19 @@ def encode(number, base):
     # ...
     # TODO: Encode number in any base (2 up to 36)
     # ...
+
+    encoded_string = ''
+    while number > 0:
+        remainder = number % base # Find remainder
+        number -= remainder
+        number = number // base # Just get the floor division and no remainder
+
+        if remainder > 9: # For hexidemcial cause goes up to 9, so only 10 and up
+            remainder = string.ascii_lowercase[remainder-10] # again because starts at 0
+
+        encoded_string += str(remainder)
+
+    return ''.join(reversed(encoded_string)) # To reverse the encoded string and return as string, not list
 
 
 def convert(digits, base1, base2):
@@ -59,7 +86,9 @@ def convert(digits, base1, base2):
     # ...
     # TODO: Convert digits from any base to any base (2 up to 36)
     # ...
-
+    decoded = decode(digits, base1)
+    converted = encode(decoded, base2)
+    return converted
 
 def main():
     """Read command-line arguments and convert given digits between bases."""
