@@ -32,9 +32,8 @@ def decode(digits, base):
         if digits[i].isalpha(): # Checks to see if the digit is a character instead of numerical
             digit = string.ascii_lowercase.index(digits[i].lower()) + 10 # Can add 10 b/c starts at 0, in alphabetical order
         else:
-            digit = int(digits[i]) # Convert to integer
+            digit = int(digits[i])
 
-        # power = len(digits) - i - 1 # Get the power
         decoded_value += digit * (base ** i)
 
     return decoded_value
@@ -48,18 +47,13 @@ def encode(number, base):
     assert 2 <= base <= 36, 'base is out of range: {}'.format(base)
     # Handle unsigned numbers only for now
     assert number >= 0, 'number is negative: {}'.format(number)
-    # TODO: Encode number in binary (base 2)
-    # ...
-    # TODO: Encode number in hexadecimal (base 16)
-    # ...
-    # TODO: Encode number in any base (2 up to 36)
-    # ...
+
 
     encoded_string = ''
     while number > 0:
-        remainder = number % base # Find remainder
+        remainder = number % base # this finds remainder
         number -= remainder
-        number = number // base # Just get the floor division and no remainder
+        number = number // base
 
         if remainder > 9: # For hexidemcial cause goes up to 9, so only 10 and up
             remainder = string.ascii_lowercase[remainder-10] # again because starts at 0
@@ -93,7 +87,7 @@ def convert(digits, base1, base2):
 def main():
     """Read command-line arguments and convert given digits between bases."""
     import sys
-    args = sys.argv[1:]  # Ignore script file name
+    args = sys.argv[1:]
     if len(args) == 3:
         digits = args[0]
         base1 = int(args[1])
