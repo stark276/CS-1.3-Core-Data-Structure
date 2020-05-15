@@ -65,7 +65,7 @@ class ArrayStack(object):
 
     def __init__(self, iterable=None):
         """Initialize this stack and push the given items, if any."""
-        # Initialize a new list (dynamic array) to store the items
+        # Initialize a new list (dynamic array) to store the item
         self.list = list()
         if iterable is not None:
             for item in iterable:
