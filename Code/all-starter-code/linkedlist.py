@@ -1,4 +1,4 @@
-    #!python
+#!python
 
 class Node(object):
 
@@ -79,6 +79,23 @@ class LinkedList(object):
         if not (0 <= index < self.size):
             raise ValueError('List index out of range: {}'.format(index))
         # TODO: Find the node at the given index and return its data
+        # creating node counter
+        node_count = 0
+        #We need to start at the head
+        node = self.head
+        #  Loop until the node is None
+        while node is not None:
+            # if index is equal to 0, then return the node's data
+            if index == node_count:
+                return node.data
+            # if it's not equal
+            else:
+            # the node counter needs to go forward
+                node_count += 1
+                node = node.next
+
+
+
 
     def insert_at_index(self, index, item):
         """Insert the given item at the given index in this linked list, or
@@ -89,6 +106,25 @@ class LinkedList(object):
         if not (0 <= index <= self.size):
             raise ValueError('List index out of range: {}'.format(index))
         # TODO: Find the node before the given index and insert item after it
+        new_node = Node(item)
+        #if the linkedlist is empty, we need to prepend
+        if self.is_empty() or index == 0:
+            self.prepend(item)
+        # We need to insert on the tail
+        elif index == self.size:
+            self.append(item)
+        else:
+            current_node = self.head
+
+            i = 0
+            while i < index:
+                current_node = current_node.next
+                i += 1
+
+            new_node.next = current_node
+            current_node = new_node # Set the target node now to be the new node
+
+            self.size += 1
 
     def append(self, item):
         """Insert the given item at the tail of this linked list.
@@ -104,6 +140,7 @@ class LinkedList(object):
             self.tail.next = new_node
         # Update tail to new node regardless
         self.tail = new_node
+        self.size += 1
 
     def prepend(self, item):
         """Insert the given item at the head of this linked list.
@@ -119,6 +156,7 @@ class LinkedList(object):
             new_node.next = self.head
         # Update head to new node regardless
         self.head = new_node
+        self.size += 1
 
     def find(self, quality):
         """Return an item from this linked list satisfying the given quality.
@@ -145,7 +183,16 @@ class LinkedList(object):
         Worst case running time: ??? under what conditions? [TODO]"""
         # TODO: Find the node containing the given old_item and replace its
         # data with new_item, without creating a new node object
-        pass
+        current_node = self.head
+
+        while current_node is not None:
+            if current_node.data == old_item:
+                current_node.data = new_item
+                return
+            # We go to the next node
+            current_node = current_node.next
+        # If the data in the node is not  found in list.
+        raise ValueError('Item not found!: {}'.format(old_item))
 
     def delete(self, item):
         """Delete the given item from this linked list, or raise ValueError.
@@ -169,6 +216,7 @@ class LinkedList(object):
                 node = node.next
         # Check if we found the given item or we never did and reached the tail
         if found:
+            self.size -= 1
             # Check if we found a node in the middle of this linked list
             if node is not self.head and node is not self.tail:
                 # Update the previous node to skip around the found node
