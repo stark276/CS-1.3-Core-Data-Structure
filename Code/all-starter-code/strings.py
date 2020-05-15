@@ -5,7 +5,10 @@ def contains(text, pattern):
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement contains here (iteratively and/or recursively)
-
+    if find_index(text, pattern) is not None:
+        return True
+    else:
+        return False
 
 def find_index(text, pattern):
     """Return the starting index of the first occurrence of pattern in text,
@@ -13,7 +16,25 @@ def find_index(text, pattern):
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement find_index here (iteratively and/or recursively)
-
+    start = 0
+    index = 0
+    index_pattern = 0
+    #if pattern empty returns 0
+    #You could also do it with the len(pattern) == 0
+    if pattern == '':
+        return 0
+    while index < len(text):
+        if text[index] == pattern[index_pattern]:
+            index += 1
+            index_pattern += 1
+            # They all matches so return the start which is index
+            if index_pattern == len(pattern):
+                return start
+        else:
+            start += 1
+            index = start
+            index_pattern = 0
+    return None
 
 def find_all_indexes(text, pattern):
     """Return a list of starting indexes of all occurrences of pattern in text,
@@ -21,6 +42,36 @@ def find_all_indexes(text, pattern):
     assert isinstance(text, str), 'text is not a string: {}'.format(text)
     assert isinstance(pattern, str), 'pattern is not a string: {}'.format(text)
     # TODO: Implement find_all_indexes here (iteratively and/or recursively)
+    if len(pattern) == 0:
+        return list(range(len(text)))
+
+    index = find_index(text, pattern)
+    index_list = []
+
+    if index != None:
+        index_list.append(index)
+
+        index += 1
+        start = index
+        index_pattern = 0
+
+        while index < len(text):
+            if text[index] == pattern[index_pattern]:
+                index += 1
+                index_pattern += 1
+
+                if index_pattern == len(pattern):
+                    index_list.append(start)
+                    index_pattern = 0
+                    start += 1
+                    index = start
+
+            else:
+                index_pattern = 0
+                start += 1
+                index = start
+        return index_list
+    return index_list
 
 
 def test_string_algorithms(text, pattern):
